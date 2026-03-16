@@ -1,0 +1,87 @@
+// Prisma schema for Healthcare Accessibility Intelligence Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FacilityType {
+  Hospital
+  Clinic
+  Diagnostic_Center
+}
+
+enum IssueStatus {
+  OPEN
+  RESOLVED
+}
+
+model Facility {
+  id                 String              @id @default(uuid())
+  name               String
+  type               FacilityType
+  address            String
+  contact            String
+  lat                Float
+  lng                Float
+  rating             Float               @default(0)
+  accessibility_score Float              @default(0)
+  verified           Boolean             @default(false)
+  photos             String[]
+  services           String[]
+  createdAt          DateTime            @default(now())
+
+  accessibility      FacilityAccessibility?
+  reviews            Review[]
+  reports            IssueReport[]
+
+  @@index([lat, lng])
+}
+
+model FacilityAccessibility {
+  id                       String   @id @default(uuid())
+  facility_id              String   @unique
+  wheelchair_ramp          Boolean  @default(false)
+  elevator                 Boolean  @default(false)
+  accessible_restroom      Boolean  @default(false)
+  braille_signage          Boolean  @default(false)
+  tactile_path             Boolean  @default(false)
+  wide_doorway             Boolean  @default(false)
+  adjustable_exam_table    Boolean  @default(false)
+  sign_language_interpreter Boolean @default(false)
+  priority_queue           Boolean  @default(false)
+  disabled_parking         Boolean  @default(false)
+
+  facility Facility @relation(fields: [facility_id], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id                  String   @id @default(uuid())
+  facility_id         String
+  user_name           String?
+  submitter_ip_hash   String
+  rating              Int
+  comment             String
+  date                DateTime @default(now())
+
+  facility Facility @relation(fields: [facility_id], references: [id], onDelete: Cascade)
+
+  @@index([facility_id])
+}
+
+model IssueReport {
+  id          String      @id @default(uuid())
+  facility_id String
+  issue_type  String
+  description String
+  status      IssueStatus @default(OPEN)
+  created_at  DateTime    @default(now())
+
+  facility Facility @relation(fields: [facility_id], references: [id], onDelete: Cascade)
+
+  @@index([facility_id])
+}

@@ -16,12 +16,21 @@ export default function Navbar() {
   }, []);
 
   const toggleHighContrast = () => {
-    setIsHighContrast(!isHighContrast);
-    document.documentElement.classList.toggle('high-contrast');
+    const next = !isHighContrast;
+    setIsHighContrast(next);
+    document.body.classList.toggle('high-contrast', next);
+    localStorage.setItem('high-contrast', String(next));
   };
 
+  // Restore from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('high-contrast') === 'true';
+    setIsHighContrast(saved);
+    document.body.classList.toggle('high-contrast', saved);
+  }, []);
+
   return (
-    <nav className={`sticky top-0 z-50 transition-all duration-300 ${
+    <nav aria-label="Main navigation" role="navigation" className={`sticky top-0 z-50 transition-all duration-300 ${
       scrolled ? 'py-2' : 'py-4'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,22 +59,24 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2 sm:gap-6">
             <div className="flex items-center gap-1 sm:gap-2">
-              <button 
+              <button
                 onClick={toggleHighContrast}
-                className={`p-2.5 rounded-xl transition-all ${
-                  isHighContrast 
-                    ? 'bg-yellow-400 text-black shadow-lg shadow-yellow-400/30' 
+                aria-pressed={isHighContrast}
+                aria-label="Toggle high contrast mode"
+                title={isHighContrast ? 'Disable high contrast' : 'Enable high contrast'}
+                className={`p-2.5 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  isHighContrast
+                    ? 'bg-yellow-400 text-black shadow-lg shadow-yellow-400/30'
                     : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
                 }`}
-                title="Accessibility Mode"
               >
-                <Accessibility size={20} />
+                <Accessibility size={20} aria-hidden="true" />
               </button>
               
-              <Link href="/dashboard" className="p-2.5 bg-slate-50 text-slate-600 hover:bg-slate-100 rounded-xl transition-all relative">
-                <Heart size={20} className={bookmarks.length > 0 ? "fill-red-500 text-red-500" : ""} />
+              <Link href="/dashboard" aria-label={`Saved facilities${bookmarks.length > 0 ? `, ${bookmarks.length} saved` : ''}`} className="p-2.5 bg-slate-50 text-slate-600 hover:bg-slate-100 rounded-xl transition-all relative focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <Heart size={20} aria-hidden="true" className={bookmarks.length > 0 ? 'fill-red-500 text-red-500' : ''} />
                 {bookmarks.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary-600 text-white text-[10px] flex items-center justify-center rounded-full font-black">
+                  <span aria-hidden="true" className="absolute -top-1 -right-1 w-4 h-4 bg-primary-600 text-white text-[10px] flex items-center justify-center rounded-full font-black">
                     {bookmarks.length}
                   </span>
                 )}

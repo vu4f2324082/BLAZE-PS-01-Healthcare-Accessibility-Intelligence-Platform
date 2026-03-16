@@ -2,84 +2,92 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+/* ──────────────────────────────────────────────────
+   TASK-01  CSS Custom Properties & Design Tokens
+   ────────────────────────────────────────────────── */
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --color-primary: 2 132 199;
+    --color-accent: 22 163 74;
+    --color-bg: 248 250 252;
+    --color-text: 15 23 42;
+
+    /* Focus ring — WCAG 2.4.11 */
+    --focus-ring: 0 0 0 3px rgba(2, 132, 199, 0.6);
+  }
+
+  /* ── High-Contrast Mode (TASK-06) ── */
+  body.high-contrast {
+    background: #000 !important;
+    color: #ffff00 !important;
+  }
+  body.high-contrast * {
+    background-color: #000 !important;
+    color: #ffff00 !important;
+    border-color: #ffff00 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  body.high-contrast a,
+  body.high-contrast button {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  body.high-contrast :focus-visible {
+    outline: 4px solid #ffffff !important;
+    outline-offset: 2px !important;
+  }
+  /* Contrast: yellow on black = 19.5:1 ✅ exceeds WCAG AAA (7:1) */
+
+  /* ── Skip Navigation Link (TASK-01/22) ── */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 9999;
+    padding: 0.75rem 1.5rem;
+    background: rgb(2 132 199);
+    color: white;
+    font-weight: 900;
+    border-radius: 0 0 0.75rem 0.75rem;
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus {
+    top: 0;
+    outline: 3px solid white;
+    outline-offset: 2px;
+  }
+
+  /* ── Focus Visible (TASK-22) ── */
+  *:focus-visible {
+    outline: 3px solid rgb(2 132 199);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* ── Smooth scroll ── */
+  html {
+    scroll-behavior: smooth;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: white;
-}
+/* ──────────────────────────────────────────────────
+   Glassmorphism & reusable design utilities
+   ────────────────────────────────────────────────── */
+@layer components {
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/30;
+  }
 
-/* Premium UI Tokens */
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
+  .glossy-gradient {
+    background: linear-gradient(135deg, rgb(2 132 199), rgb(14 165 233), rgb(22 163 74));
+  }
 
-.glass-dark {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.glossy-gradient {
-  background: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.glossy-gradient::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 50%,
-    transparent 50.1%
-  );
-  transform: rotate(30deg);
-  pointer-events: none;
-}
-
-.hover-glow:hover {
-  box-shadow: 0 0 25px rgba(14, 165, 233, 0.3);
-  transform: translateY(-2px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Accessibility Focus States */
-*:focus-visible {
-  outline: 4px solid #0ea5e9;
-  outline-offset: 2px;
-}
-
-/* High Contrast Mode Utility */
-.high-contrast {
-  filter: contrast(150%) brightness(110%);
-}
-
-.high-contrast body {
-  background: #000;
-  color: #fff;
-}
-
-.high-contrast a, .high-contrast button {
-  outline: 2px solid yellow;
+  .hover-glow {
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  .hover-glow:hover {
+    box-shadow: 0 20px 60px -10px rgba(2, 132, 199, 0.25);
+    transform: translateY(-2px);
+  }
 }
