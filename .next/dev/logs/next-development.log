@@ -1,2 +1,7 @@
 [00:00:01.034] Server  LOG     ✓ Ready in 759ms
 [00:00:04.087] Server  LOG     ○ Compiling / ...
+[00:11:04.648] Server  LOG     ✓ Compiled in 1342ms
+[00:11:06.337] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:06.362] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:07.883] Browser LOG     Initializing facilities...
+[00:11:07.883] Browser LOG     Generated 50 facilities.
