@@ -1,9 +1,0 @@
-{
-  "/about/page": "app/about/page.js",
-  "/api/facilities/[id]/reviews/route": "app/api/facilities/[id]/reviews/route.js",
-  "/api/facilities/route": "app/api/facilities/route.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/facilities/[id]/page": "app/facilities/[id]/page.js",
-  "/page": "app/page.js",
-  "/search/page": "app/search/page.js"
-}
