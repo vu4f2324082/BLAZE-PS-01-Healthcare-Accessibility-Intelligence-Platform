@@ -1,0 +1,3 @@
+module.exports=[27572,a=>{"use strict";var b=a.i(7997);function c({children:a}){return(0,b.jsx)("html",{lang:"en",className:"scroll-smooth",children:(0,b.jsx)("body",{className:"font-sans antialiased",children:(0,b.jsx)("div",{className:"min-h-screen flex flex-col bg-slate-50",children:a})})})}a.s(["default",()=>c,"metadata",0,{title:"AccessHealth - Healthcare Accessibility Intelligence Platform",description:"Comprehensive database of healthcare facilities with detailed accessibility information for persons with disabilities."}])}];
+
+//# sourceMappingURL=src_app_layout_tsx_cc8184fa._.js.map
