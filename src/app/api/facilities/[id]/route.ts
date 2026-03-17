@@ -12,10 +12,8 @@ async function getPrisma() {
 }
 
 // GET /api/facilities/:id
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const prisma = await getPrisma();
 
   if (prisma) {
